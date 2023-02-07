@@ -1,5 +1,6 @@
 package br.com.lfmelo.apijunit5.services.impl;
 
+import br.com.lfmelo.apijunit5.controllers.exception.NotFoundException;
 import br.com.lfmelo.apijunit5.entities.User;
 import br.com.lfmelo.apijunit5.entities.dtos.UserDTO;
 import br.com.lfmelo.apijunit5.repositories.UserRepository;
@@ -20,16 +21,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found."));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found."));
     }
 
     @Override
-    public void updateUser(Integer id, UserDTO dto) {
+    public User updateUser(Integer id, UserDTO dto) {
         User user = findUserById(id);
         user.setName(dto.getName() == null ? user.getName() : dto.getName());
         user.setEmail(dto.getEmail() == null ? user.getEmail() : dto.getEmail());
         user.setPassword(dto.getPassword() == null ? user.getPassword() : dto.getPassword());
-        repository.save(user);
+        return repository.save(user);
     }
 
     @Override
