@@ -1,11 +1,16 @@
 package br.com.lfmelo.apijunit5.entities.dtos;
 
+import javax.validation.constraints.NotEmpty;
+
 public class UserDTO {
 
+    @NotEmpty(message = "Name cannot be null")
     private String name;
 
+    @NotEmpty(message = "Email cannot be null")
     private String email;
 
+    @NotEmpty(message = "Password cannot be null")
     private String password;
 
     public String getName() {
