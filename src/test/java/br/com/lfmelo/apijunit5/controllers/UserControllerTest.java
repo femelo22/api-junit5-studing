@@ -175,6 +175,7 @@ public class UserControllerTest {
         //Validacao
         mvc
                 .perform(request)
-                .andExpect(status().isNoContent());
+                .andExpect( status().isNoContent() );
     }
+
 }
