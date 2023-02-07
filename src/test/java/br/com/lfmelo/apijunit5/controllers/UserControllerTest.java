@@ -164,12 +164,15 @@ public class UserControllerTest {
     @Test
     @DisplayName("Deve deletar um usuario por ID")
     public void deleteUserTest() throws Exception {
+        //Cenario
         User user = buildSavedUser();
         BDDMockito.given( service.findUserById(Mockito.anyInt())).willReturn(user);
 
+        //Execucao
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .delete(USER_API.concat("/" + 1));
 
+        //Validacao
         mvc
                 .perform(request)
                 .andExpect(status().isNoContent());
