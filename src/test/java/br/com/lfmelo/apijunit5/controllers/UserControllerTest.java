@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static br.com.lfmelo.apijunit5.factories.UserFactory.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -65,6 +67,27 @@ public class UserControllerTest {
                 .andExpect( MockMvcResultMatchers.jsonPath("email").value(dto.getEmail()))
                 .andExpect( MockMvcResultMatchers.jsonPath("password").value(dto.getPassword()))
                 .andExpect( MockMvcResultMatchers.jsonPath("created").isNotEmpty());
+    }
+
+
+    @Test
+    @DisplayName("Deve lancar erro de validacao quando nao houver dados suficiente para criacao de usuario.")
+    public void createInvalidUserTest() throws Exception {
+        //Cenario
+        String json = new ObjectMapper().writeValueAsString(new UserDTO());
+
+        //Execucao
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(USER_API)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        //Validacao
+        mvc
+                .perform(request)
+                .andExpect( status().isBadRequest() )
+                .andExpect( jsonPath("errors", hasSize(3)));
     }
 
 
